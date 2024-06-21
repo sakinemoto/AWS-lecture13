@@ -1,0 +1,27 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@4.1.3
+
+jobs:
+  deploy:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: $AWS_ACCESS_KEY_ID
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          aws-region: $AWS_DEFAULT_REGION
+      - run:
+          name: Deploy CloudFormation stack
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudformation/resources.yml \
+              --stack-name lec13 \
+              --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
+              --capabilities CAPABILITY_NAMED_IAM
+
+workflows:
+  lecture13:
+    jobs:
+      - deploy
