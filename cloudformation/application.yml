@@ -1,0 +1,150 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Lecture13 Application Resources
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Description: The environment name (e.g., Dev, Test, Prod)
+    Default: Lec13
+  DBPassword:
+    Type: String
+    Description: The database admin password
+    NoEcho: true
+
+Resources:
+  MyALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    DeletionPolicy: Delete
+    Properties:
+      Scheme: internet-facing
+      SecurityGroups:
+        - !ImportValue
+          'Fn::Sub': '${EnvironmentName}-MyAlbSecGroupId'
+      Subnets:
+        - !ImportValue
+          'Fn::Sub': '${EnvironmentName}-PublicSubnet1Id'
+        - !ImportValue
+          'Fn::Sub': '${EnvironmentName}-PublicSubnet2Id'
+      Type: application
+      Name: !Sub ALB-${EnvironmentName}
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  MytargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DeletionPolicy: Delete
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      TargetType: instance
+      UnhealthyThresholdCount: 2
+      VpcId: !ImportValue
+        'Fn::Sub': '${EnvironmentName}-VPCId'
+      Name: !Sub TargetGroup-${EnvironmentName}
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  MyALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DeletionPolicy: Delete
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref MytargetGroup
+      LoadBalancerArn: !Ref MyALB
+      Port: 80
+      Protocol: HTTP
+
+  MyKeyPair:
+    Type: AWS::EC2::KeyPair
+    DeletionPolicy: Delete
+    Properties:
+      KeyName: MyKeyPair
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties:
+      KeyName: !Ref MyKeyPair
+      ImageId: ami-0df2ca8a354185e1e
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !ImportValue
+          'Fn::Sub': '${EnvironmentName}-MyEC2SecGroupId'
+      SubnetId: !ImportValue
+        'Fn::Sub': '${EnvironmentName}-PublicSubnet1Id'
+      IamInstanceProfile: !Ref MyInstanceProfile
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  MyRdsDBInstance:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      DBName: mydatabase
+      Engine: mysql
+      EngineVersion: 8.0.35
+      MasterUsername: raisetech_admin
+      MasterUserPassword: !Ref DBPassword
+      Port: 3306
+      PubliclyAccessible: false
+      StorageType: gp2
+      DBSubnetGroupName: !ImportValue
+        'Fn::Sub': '${EnvironmentName}-MyDBSubnetGroupId'
+      VPCSecurityGroups:
+        - !ImportValue
+          'Fn::Sub': '${EnvironmentName}-MyRdsSecGroupId'
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  Mys3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: mybucket-raisetech-lec10
+      Tags:
+        - Key: Name
+          Value: lec13
+
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    DeletionPolicy: Delete
+    Properties:
+      InstanceProfileName: !Sub ${EnvironmentName}
+      Roles:
+        - !Ref MyRole
+
+  MyRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      RoleName: !Sub ${EnvironmentName}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub EC2S3FullAccessToRaisetech${EnvironmentName}
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: s3:*
+                Resource: !Sub arn:aws:s3:::${Mys3Bucket}/*
+      Tags:
+        - Key: Name
+          Value: lec13

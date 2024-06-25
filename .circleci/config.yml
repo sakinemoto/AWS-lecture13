@@ -13,11 +13,20 @@ jobs:
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: $AWS_DEFAULT_REGION
       - run:
-          name: Deploy CloudFormation stack
+          name: Deploy Network CloudFormation stack
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/resources.yml \
-              --stack-name lec13 \
+              --template-file cloudformation/network.yml \
+              --stack-name lec13-network \
+              --parameter-overrides EnvironmentName=$ENVIRONMENT_NAME \
+              --capabilities CAPABILITY_NAMED_IAM
+            aws cloudformation wait stack-create-complete --stack-name lec13-network
+      - run:
+          name: Deploy Application CloudFormation stack
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudformation/application.yml \
+              --stack-name lec13-application \
               --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
               --capabilities CAPABILITY_NAMED_IAM
 
