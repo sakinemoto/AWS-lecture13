@@ -58,20 +58,11 @@ Resources:
       Port: 80
       Protocol: HTTP
 
-  MyKeyPair:
-    Type: AWS::EC2::KeyPair
-    DeletionPolicy: Delete
-    Properties:
-      KeyName: MyKeyPair
-      Tags:
-        - Key: Name
-          Value: lec13
-
   MyEC2Instance:
     Type: AWS::EC2::Instance
     DeletionPolicy: Delete
     Properties:
-      KeyName: !Ref MyKeyPair
+      KeyName: MyKeyPair
       ImageId: ami-0df2ca8a354185e1e
       InstanceType: t2.micro
       SecurityGroupIds:

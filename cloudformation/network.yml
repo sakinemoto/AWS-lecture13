@@ -31,6 +31,22 @@ Resources:
       VpcId: !Ref MyVPC
       InternetGatewayId: !Ref MyInternetGateway
 
+  MyPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: !Sub Public-Route-Table-${EnvironmentName}
+
+  MyPublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref MyPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref MyInternetGateway
+
+
   MyPublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -73,6 +89,18 @@ Resources:
         - Key: Name
           Value: !Sub Pvt-subnet-2-${EnvironmentName}
 
+  MyPublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MyPublicSubnet1
+      RouteTableId: !Ref MyPublicRouteTable
+
+  MyPublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref MyPublicSubnet2
+      RouteTableId: !Ref MyPublicRouteTable
+
   MyDBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -90,7 +118,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 126.51.136.123/32
+          CidrIp: 126.72.80.47/32
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
@@ -181,3 +209,4 @@ Outputs:
     Value: !Ref MyAlbSecGroup
     Export:
       Name: !Sub ${EnvironmentName}-MyAlbSecGroupId
+
