@@ -17,33 +17,33 @@ jobs:
           aws_access_key_id: $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
           region: $AWS_DEFAULT_REGION
-      - run:
-          name: Deploy Network CloudFormation stack
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/network.yml \
-              --stack-name <<pipeline.parameters.NameBase>>-network \
-              --parameter-overrides EnvironmentName=$ENVIRONMENT_NAME \
-              --capabilities CAPABILITY_NAMED_IAM
-            aws cloudformation wait stack-create-complete --stack-name <<pipeline.parameters.NameBase>>-network
-      - run:
-          name: Deploy Application CloudFormation stack
-          command: |
-            aws cloudformation deploy \
-              --template-file cloudformation/application.yml \
-              --stack-name <<pipeline.parameters.NameBase>>-application \
-              --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
-              --capabilities CAPABILITY_NAMED_IAM
+      # - run:
+      #     name: Deploy Network CloudFormation stack
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file cloudformation/network.yml \
+      #         --stack-name << pipeline.parameters.NameBase >>-network \
+      #         --parameter-overrides EnvironmentName=$ENVIRONMENT_NAME \
+      #         --capabilities CAPABILITY_NAMED_IAM
+      #       aws cloudformation wait stack-create-complete --stack-name << pipeline.parameters.NameBase >>-network
+      # - run:
+      #     name: Deploy Application CloudFormation stack
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file cloudformation/application.yml \
+      #         --stack-name << pipeline.parameters.NameBase >>-application \
+      #         --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
+      #         --capabilities CAPABILITY_NAMED_IAM
 
       - run:
           name: Set Environment Variables for ansible
           command: |
-            echo export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-network --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text) >> $BASH_ENV
-            echo export AWS_DB_USER=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`DBuser`].OutputValue' --output text) >> $BASH_ENV
-            echo export AWS_DB_PW=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`DBpassword`].OutputValue' --output text) >> $BASH_ENV
-            echo export AWS_DB_HOST=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text) >> $BASH_ENV
-            echo export AWS_S3_BUCKET=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text) >> $BASH_ENV
-            echo export AWS_ALB_HOST=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text) >> $BASH_ENV
+            echo export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-network --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text) >> $BASH_ENV
+            echo export DB_USER=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBuser`].OutputValue' --output text) >> $BASH_ENV
+            echo export DB_PASSWORD=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBpassword`].OutputValue' --output text) >> $BASH_ENV
+            echo export DB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text) >> $BASH_ENV
+            echo export S3_BUCKET=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text) >> $BASH_ENV
+            echo export ALB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text) >> $BASH_ENV
             source "$BASH_ENV"
 
 
