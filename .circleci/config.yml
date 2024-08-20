@@ -14,26 +14,26 @@ jobs:
     steps:
       - checkout
       - aws-cli/setup:
-          aws_access_key_id: $AWS_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-          region: $AWS_DEFAULT_REGION
-      # - run:
-      #     name: Deploy Network CloudFormation stack
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file cloudformation/network.yml \
-      #         --stack-name << pipeline.parameters.NameBase >>-network \
-      #         --parameter-overrides EnvironmentName=$ENVIRONMENT_NAME \
-      #         --capabilities CAPABILITY_NAMED_IAM
-      #       aws cloudformation wait stack-create-complete --stack-name << pipeline.parameters.NameBase >>-network
-      # - run:
-      #     name: Deploy Application CloudFormation stack
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file cloudformation/application.yml \
-      #         --stack-name << pipeline.parameters.NameBase >>-application \
-      #         --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
-      #         --capabilities CAPABILITY_NAMED_IAM
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+      - run:
+          name: Deploy Network CloudFormation stack
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudformation/network.yml \
+              --stack-name << pipeline.parameters.NameBase >>-network \
+              --parameter-overrides EnvironmentName=$ENVIRONMENT_NAME \
+              --capabilities CAPABILITY_NAMED_IAM
+            aws cloudformation wait stack-create-complete --stack-name << pipeline.parameters.NameBase >>-network
+      - run:
+          name: Deploy Application CloudFormation stack
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudformation/application.yml \
+              --stack-name << pipeline.parameters.NameBase >>-application \
+              --parameter-overrides DBPassword=$DB_PASSWORD EnvironmentName=$ENVIRONMENT_NAME \
+              --capabilities CAPABILITY_NAMED_IAM
 
       - run:
           name: Set Environment Variables for ansible
