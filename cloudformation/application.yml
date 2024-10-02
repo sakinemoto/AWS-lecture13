@@ -5,7 +5,11 @@ Parameters:
   EnvironmentName:
     Type: String
     Description: The environment name (e.g., Dev, Test, Prod)
-    Default: Lec13
+    Default: Lec13  
+  DBUser:
+    Type: String
+    Default: raisetech_admin
+    Description: The database admin username
   DBPassword:
     Type: String
     Description: The database admin password
@@ -85,8 +89,8 @@ Resources:
       DBName: mydatabase
       Engine: mysql
       EngineVersion: 8.0.35
-      MasterUsername: raisetech_admin
-      MasterUserPassword: !Ref DBPassword
+      MasterUsername: !Ref DBUser  # パラメータを参照
+      MasterUserPassword: !Ref DBPassword  # パラメータを参照
       Port: 3306
       PubliclyAccessible: false
       StorageType: gp2
@@ -143,13 +147,13 @@ Resources:
 Outputs:
   DBUser:
     Description: The database master username
-    Value: !Ref MyRdsDBInstance.MasterUsername
+    Value: !Ref DBUser  # パラメータを出力
     Export:
       Name: !Sub "${EnvironmentName}-DBUser"
 
   DBPassword:
     Description: The database master password
-    Value: !Ref DBPassword
+    Value: !Ref DBPassword  # パラメータを出力
     Export:
       Name: !Sub "${EnvironmentName}-DBPassword"
 
