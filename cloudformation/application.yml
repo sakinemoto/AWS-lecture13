@@ -139,3 +139,17 @@ Resources:
       Tags:
         - Key: Name
           Value: lec13
+
+Outputs:
+  DBUser:
+    Description: The database master username
+    Value: !Ref MyRdsDBInstance.MasterUsername
+    Export:
+      Name: !Sub "${EnvironmentName}-DBUser"
+
+  DBPassword:
+    Description: The database master password
+    Value: !Ref DBPassword
+    Export:
+      Name: !Sub "${EnvironmentName}-DBPassword"
+
