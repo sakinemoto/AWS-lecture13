@@ -120,6 +120,10 @@ Resources:
           ToPort: 22
           CidrIp: 126.99.198.154/32
         - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 126.99.198.154/32
+        - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
