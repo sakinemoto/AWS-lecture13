@@ -43,6 +43,8 @@ Resources:
       Protocol: HTTP
       ProtocolVersion: HTTP1
       TargetType: instance
+      Targets: 
+           - Id: !Ref MyEC2Instance
       UnhealthyThresholdCount: 2
       VpcId: !ImportValue
         'Fn::Sub': '${EnvironmentName}-VPCId'
