@@ -159,3 +159,7 @@ Outputs:
     Export:
       Name: !Sub "${EnvironmentName}-DBPassword"
 
+  ALBendpoint:
+    Description: endpoint
+    Value: !GetAtt ALB.DNSname
+
