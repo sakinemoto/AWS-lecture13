@@ -158,8 +158,3 @@ Outputs:
     Value: !Ref DBPassword  # パラメータを出力
     Export:
       Name: !Sub "${EnvironmentName}-DBPassword"
-
-  ALBendpoint:
-    Description: endpoint
-    Value: !GetAtt ALB.DNSname
-
