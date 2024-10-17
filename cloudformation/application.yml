@@ -155,7 +155,7 @@ Outputs:
     Value: !Ref DBPassword
   DBhost:
     Description: "The database host"
-    Value: !GetAtt MyRDSInstance.Endpoint.Address
+    Value: !GetAtt MyRdsDBInstance.Endpoint.Address
   ALBendpoint:
     Description: "The ALB DNS name"
     Value: !GetAtt MyALB.DNSName
