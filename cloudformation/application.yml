@@ -147,14 +147,15 @@ Resources:
           Value: lec13
 
 Outputs:
-  DBUser:
-    Description: The database master username
-    Value: !Ref DBUser  # パラメータを出力
-    Export:
-      Name: !Sub "${EnvironmentName}-DBUser"
-
-  DBPassword:
-    Description: The database master password
-    Value: !Ref DBPassword  # パラメータを出力
-    Export:
-      Name: !Sub "${EnvironmentName}-DBPassword"
+  DBuser:
+    Description: "The database user"
+    Value: !Ref DBUser
+  DBpassword:
+    Description: "The database password"
+    Value: !Ref DBPassword
+  DBhost:
+    Description: "The database host"
+    Value: !GetAtt MyRDSInstance.Endpoint.Address
+  ALBendpoint:
+    Description: "The ALB DNS name"
+    Value: !GetAtt MyALB.DNSName
