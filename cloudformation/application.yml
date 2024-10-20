@@ -147,10 +147,10 @@ Resources:
           Value: lec13
 
 Outputs:
-  DBuser:
+  DBUser:
     Description: "The database user"
     Value: !Ref DBUser
-  DBpassword:
+  DBPassword:
     Description: "The database password"
     Value: !Ref DBPassword
   DBhost:
