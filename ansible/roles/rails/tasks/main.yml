@@ -1,0 +1,12 @@
+---
+# roles/rails/tasks/main.yml
+
+- name: Install Rails
+  ansible.builtin.shell: >
+    bash -lc 'eval "$(rbenv init -)"; gem install rails'
+  environment:
+    RBENV_ROOT: "{{ rbenv_root }}"
+    PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
+  become: true
+  become_user: ec2-user
+

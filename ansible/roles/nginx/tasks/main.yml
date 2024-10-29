@@ -1,0 +1,73 @@
+---
+# roles/nginx/tasks/main.yml
+
+- name: Install required Python packages for Ansible AWS modules
+  pip:
+    name:
+      - boto
+      - boto3
+    state: present
+
+- name: Ensure nginx group exists
+  ansible.builtin.group:
+    name: nginx
+    state: present
+  become: true
+
+- name: Ensure sockets directory exists
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets
+    state: directory
+    owner: ec2-user
+    group: nginx
+    mode: '0775'
+
+- name: Check if Puma socket exists
+  ansible.builtin.stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
+  register: puma_socket_stat
+
+- name: Set permissions for Puma socket if it exists
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
+    owner: ec2-user
+    group: nginx
+    mode: '0775'
+  when: puma_socket_stat.stat.exists
+
+- name: Install Nginx
+  ansible.builtin.shell:
+    cmd: amazon-linux-extras install nginx1 -y
+  become: true
+
+- name: Create directory for Nginx configuration files
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/nginx
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Create Nginx configuration for Rails app
+  ansible.builtin.template:
+    src: rails.conf.j2
+    dest: /home/ec2-user/raisetech-live8-sample-app/nginx/rails.conf
+  become: true
+
+- name: Copy nginx general configuration file
+  template:
+    src: nginx.conf.j2
+    dest: /home/ec2-user/raisetech-live8-sample-app/nginx/nginx.conf
+  become: true
+
+# Reload Nginx after updating configuration
+- name: Reload Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+  become: true
+
+- name: Enable Nginx to start on boot
+  ansible.builtin.service:
+    name: nginx
+    enabled: yes
+  become: true
