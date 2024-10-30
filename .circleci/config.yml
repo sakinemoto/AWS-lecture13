@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.3
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 
 parameters:
   NameBase:
@@ -11,6 +12,8 @@ parameters:
 jobs:
   deploy:
     executor: aws-cli/default
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
       - aws-cli/setup:
@@ -58,8 +61,7 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: |
-            ansible-playbook -i aws_ec2.yml  playbook.yml
+          command: ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
 
 workflows:
   lecture13:
