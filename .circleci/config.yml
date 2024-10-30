@@ -59,6 +59,23 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ansible
 
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:X9kJuwq4fwRwiXw/d61W2j7tPqPQjn//AOMyoB/IROM"
+      
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+
+      - run:
+          name: Set Environment Variables for Ansible
+          command: |
+            source "$BASH_ENV"
+            echo "DB_USER: $DB_USER"
+            echo "DB_PASSWORD: $DB_PASSWORD"
+            echo "DB_HOST: $DB_HOST"
+
       - run:
           name: Run Ansible Playbook
           command: ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
