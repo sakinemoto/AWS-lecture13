@@ -54,6 +54,17 @@ jobs:
             echo "ALB_HOST: $ALB_HOST"
 
       - run:
+          name: Install boto3 and botocore
+          command: |
+            pip install boto3 botocore
+      - run:
+          name: Verify boto3 installation
+          command: python -m pip show boto3
+      - run:
+          name: Verify botocore installation
+          command: python -m pip show botocore
+
+      - run:
           name: Install Ansible
           command: |
             sudo apt-get update
