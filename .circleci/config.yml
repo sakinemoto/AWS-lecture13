@@ -67,8 +67,16 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            sudo apt-get update
-            sudo apt-get install -y ansible
+            python -m pip install ansible
+      - run:
+          name: Check and Install amazon.aws Collection
+          command: |
+            if ! ansible-galaxy collection list | grep -q 'amazon.aws'; then
+              echo "amazon.aws collection is not installed. Installing now..."
+              ansible-galaxy collection install amazon.aws
+            else
+              echo "amazon.aws collection is already installed."
+            fi
 
       - add_ssh_keys:
           fingerprints:
