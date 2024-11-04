@@ -69,11 +69,11 @@ jobs:
           command: |
             python -m pip install ansible
       - run:
-          name: Check and Install amazon.aws Collection
+          name: Check and Install Specific Version of amazon.aws Collection
           command: |
             if ! ansible-galaxy collection list | grep -q 'amazon.aws'; then
-              echo "amazon.aws collection is not installed. Installing now..."
-              ansible-galaxy collection install amazon.aws
+              echo "amazon.aws collection is not installed. Installing version 5.5.0..."
+              ansible-galaxy collection install amazon.aws:3.5.0
             else
               echo "amazon.aws collection is already installed."
             fi
