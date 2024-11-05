@@ -97,7 +97,8 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
+          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -vvvv ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
+
 
 workflows:
   lecture13:
