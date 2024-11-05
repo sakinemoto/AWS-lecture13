@@ -147,6 +147,9 @@ Resources:
           Value: lec13
 
 Outputs:
+  EC2publicIP:
+    Description: "AWS EC2 Public IP"
+    Value: !GetAtt MyEC2Instance.PublicIp
   DBUser:
     Description: "The database user"
     Value: !Ref DBUser
