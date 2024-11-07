@@ -102,6 +102,10 @@ jobs:
             echo "DB_HOST: $DB_HOST"
 
       - run:
+          name: Check Private Key Fingerprint
+          command: ssh-keygen -lf ~/.ssh/id_rsa
+
+      - run:
           name: Check SSH Agent
           command: ssh-add -l
 
