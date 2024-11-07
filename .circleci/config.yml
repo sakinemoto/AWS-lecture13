@@ -102,12 +102,13 @@ jobs:
             echo "DB_HOST: $DB_HOST"
 
       - run:
+          name: Check SSH Agent
+          command: ssh-add -l
+
+      - run:
           name: Run Ansible Playbook
           command: ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
 
-      - run:
-          name: List ansible directory contents
-          command: ls -R ansible/
 
 workflows:
   lecture13:
