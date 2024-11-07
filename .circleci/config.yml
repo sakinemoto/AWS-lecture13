@@ -73,6 +73,7 @@ jobs:
           name: Install Ansible
           command: |
             python -m pip install ansible
+
       - run:
           name: Check and Install Specific Version of amazon.aws Collection
           command: |
@@ -101,13 +102,6 @@ jobs:
             echo "DB_PASSWORD: $DB_PASSWORD"
             echo "DB_HOST: $DB_HOST"
 
-      - run:
-          name: Check Private Key Fingerprint
-          command: ssh-keygen -lf ~/.ssh/id_rsa
-
-      - run:
-          name: Check SSH Agent
-          command: ssh-add -l
 
       - run:
           name: Run Ansible Playbook
