@@ -102,10 +102,6 @@ jobs:
             echo "DB_HOST: $DB_HOST"
 
       - run:
-          name: Test SSH Connection
-          command: ssh -i ~/.ssh/ -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
-
-      - run:
           name: Run Ansible Playbook
           command: ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
 
