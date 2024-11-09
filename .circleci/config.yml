@@ -84,10 +84,27 @@ jobs:
               echo "amazon.aws collection is already installed."
             fi
 
+      - run:
+          name: Check SSH Key Path
+          command: |
+           ls -la ~/.ssh
+
+      - run:
+          name: Check SSH Key Permissions
+          command: |
+           if [ -f ~/.ssh/id_rsa ]; then
+            echo "id_rsa exists and is readable."
+           else
+            echo "id_rsa is missing or not readable."
+           fi
+
       - add_ssh_keys:
           fingerprints:
             - SHA256:bA432Tfm3Hseyi0L50n1bWgnY4Ettkb+LuXUzo9H6Cc
-      
+      - run:
+         name: Display SSH Key Fingerprint
+         command: ssh-keygen -lf ~/.ssh/id_rsa
+
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
           aws_secret_access_key: AWS_SECRET_ACCESS_KEY
@@ -104,7 +121,7 @@ jobs:
 
       - run:
          name: Test SSH Connection
-         command: ssh -i ~/.ssh/MyKeyPair -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
+         command: ssh -i ~/.ssh/MyKeyPair.pem -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
 
       - run:
           name: Run Ansible Playbook
