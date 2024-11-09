@@ -86,7 +86,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:uCoD4RgIXXH0xr2OyFZSyIqIkFz4EQjGmQwrSFEQM4k"
+            - "SHA256:bA432Tfm3Hseyi0L50n1bWgnY4Ettkb+LuXUzo9H6Cc"
       
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
@@ -102,6 +102,9 @@ jobs:
             echo "DB_PASSWORD: $DB_PASSWORD"
             echo "DB_HOST: $DB_HOST"
 
+      - run:
+         name: Test SSH Connection
+         command: ssh -i ~/.ssh/MyKeyPair -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
 
       - run:
           name: Run Ansible Playbook
