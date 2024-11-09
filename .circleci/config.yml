@@ -85,18 +85,13 @@ jobs:
             fi
 
       - run:
-          name: Check SSH Key Path
+          name: Set up SSH directory and permissions
           command: |
-           ls -la ~/.ssh
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
 
-      - run:
-          name: Check SSH Key Permissions
-          command: |
-           if [ -f ~/.ssh/id_rsa ]; then
-            echo "id_rsa exists and is readable."
-           else
-            echo "id_rsa is missing or not readable."
-           fi
 
       - add_ssh_keys:
           fingerprints:
