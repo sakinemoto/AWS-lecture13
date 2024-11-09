@@ -108,7 +108,7 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook ansible/playbook.yml -i ansible/aws_ec2.yml
+          command: ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook -i ${AWS_EC2_PUBLIC}, ansible/playbook.yml
 
 
 workflows:
