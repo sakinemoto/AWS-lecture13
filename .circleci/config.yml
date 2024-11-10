@@ -94,9 +94,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:YIIUb1Og7+qMeVLUy/uGH3FSPNPXBXeaCu2C//2AgXI"
-      - run:
-          name: Display SSH Key Fingerprint
-          command: ssh-keygen -lf ~/.ssh/id_rsa
 
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
