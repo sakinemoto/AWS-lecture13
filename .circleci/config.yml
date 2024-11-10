@@ -47,7 +47,7 @@ jobs:
             echo export DB_HOST=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text) >> $BASH_ENV
             echo export S3_BUCKET=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text) >> $BASH_ENV
             echo export ALB_HOST=$(aws cloudformation describe-stacks --stack-name <<pipeline.parameters.NameBase>>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text) >> $BASH_ENV
-            
+
             source "$BASH_ENV"
 
             echo "AWS_EC2_PUBLIC: $AWS_EC2_PUBLIC"
@@ -56,7 +56,6 @@ jobs:
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
-
 
       - run:
           name: Install boto3 and botocore
@@ -92,13 +91,12 @@ jobs:
             echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
-
       - add_ssh_keys:
           fingerprints:
-            - SHA256:bA432Tfm3Hseyi0L50n1bWgnY4Ettkb+LuXUzo9H6Cc
+            - "SHA256:YIIUb1Og7+qMeVLUy/uGH3FSPNPXBXeaCu2C//2AgXI"
       - run:
-         name: Display SSH Key Fingerprint
-         command: ssh-keygen -lf ~/.ssh/id_rsa
+          name: Display SSH Key Fingerprint
+          command: ssh-keygen -lf ~/.ssh/id_rsa
 
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
@@ -115,13 +113,12 @@ jobs:
             echo "DB_HOST: $DB_HOST"
 
       - run:
-         name: Test SSH Connection
-         command: ssh -i ~/.ssh/MyKeyPair.pem -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
+          name: Test SSH Connection
+          command: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
 
       - run:
           name: Run Ansible Playbook
-          command: ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook -i ${AWS_EC2_PUBLIC}, ansible/playbook.yml
-
+          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml --private-key ~/.ssh/id_rsa
 
 workflows:
   lecture13:
