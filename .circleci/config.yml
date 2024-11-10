@@ -107,11 +107,7 @@ jobs:
             echo "AWS_EC2_PUBLIC: $AWS_EC2_PUBLIC"
             echo "DB_USER: $DB_USER"
             echo "DB_PASSWORD: $DB_PASSWORD"
-            echo "DB_HOST: $DB_HOST"
-
-      - run:
-          name: Test SSH Connection
-          command: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@$AWS_EC2_PUBLIC
+            echo "DB_HOST: $DB_HOST
 
       - run:
           name: Run Ansible Playbook
