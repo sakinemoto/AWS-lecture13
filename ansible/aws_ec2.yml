@@ -1,4 +1,4 @@
-plugin: amazon.aws.aws_ec2  # EC2インベントリプラグイン
+plugin: aws_ec2  # EC2インベントリプラグイン
 regions:
   - ap-northeast-1  # 使用しているAWSリージョンを指定（例: 東京リージョン）
 filters:
