@@ -10,7 +10,3 @@ hostnames:
 
 compose:
   ansible_host: public_ip_address  # ansible_host にインスタンスのパブリックIPアドレスを指定
-
-auth:
-  aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"  # 環境変数からアクセスキーを取得
-  aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"  # 環境変数からシークレットキーを取得

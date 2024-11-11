@@ -88,9 +88,10 @@ jobs:
             echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
-      - add_ssh_keys:
-          fingerprints:
-            - "SHA256:UuJOmVJXq+0uX6E7dq0RVC2Mjjs356P8ibeg68aAb1g"
+      - run:
+          name: Test SSH Connection
+          command: |
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$AWS_EC2_PUBLIC echo "SSH connection successful"
 
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
@@ -108,7 +109,8 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml
+          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml --private-key ~/.ssh/id_rsa -vvvv
+
 
 workflows:
   lecture13:
