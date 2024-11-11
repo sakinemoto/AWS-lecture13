@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Set Environment Variables for Ansible
           command: |
-            echo "export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-network --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text)" >> $BASH_ENV
+            echo "export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text)" >> $BASH_ENV
             echo "export DB_USER=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBUser`].OutputValue' --output text)" >> $BASH_ENV
             echo "export DB_PASSWORD=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBPassword`].OutputValue' --output text)" >> $BASH_ENV
             echo "export DB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text)" >> $BASH_ENV
