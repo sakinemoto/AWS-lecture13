@@ -108,7 +108,7 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml --private-key ~/.ssh/id_rsa
+          command: ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml
 
 workflows:
   lecture13:
