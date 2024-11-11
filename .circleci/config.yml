@@ -14,6 +14,7 @@ jobs:
     executor: aws-cli/default
     docker:
       - image: circleci/python:3.8
+      - image: cimg/base:stable
     steps:
       - checkout
       - aws-cli/setup:
@@ -84,7 +85,7 @@ jobs:
           name: Set up SSH Key
           command: |
             mkdir -p ~/.ssh
-            echo "$PRIVATE_KEY" | sed 's/\\n/\n/g' > ~/.ssh/id_rsa
+            echo "$PRIVATE_KEY" | base64 --decode > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
       - run:
