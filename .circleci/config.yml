@@ -90,7 +90,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:YIIUb1Og7+qMeVLUy/uGH3FSPNPXBXeaCu2C//2AgXI"
+            - "SHA256:UuJOmVJXq+0uX6E7dq0RVC2Mjjs356P8ibeg68aAb1g"
 
       - aws-cli/setup:
           aws_access_key_id: AWS_ACCESS_KEY_ID
