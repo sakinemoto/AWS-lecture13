@@ -68,7 +68,7 @@ Resources:
     Type: AWS::EC2::Instance
     DeletionPolicy: Delete
     Properties:
-      KeyName: MyKeyPair
+      KeyName: my-aws-key
       ImageId: ami-0df2ca8a354185e1e
       InstanceType: t2.micro
       SecurityGroupIds:
