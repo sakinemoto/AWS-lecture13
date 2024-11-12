@@ -113,7 +113,7 @@ jobs:
 
       - run:
           name: Run Ansible Playbook
-          command: ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml -vvvv
+          command: ansible-playbook -i $AWS_EC2_PUBLIC ansible/playbook.yml
 
 
 workflows:
