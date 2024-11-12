@@ -88,6 +88,10 @@ jobs:
             echo "$PRIVATE_KEY" | base64 --decode > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
+      - add_ssh_keys:
+          fingerprints:
+            - "	SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
+
       - run:
           name: Test SSH Connection
           command: |
