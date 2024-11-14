@@ -47,11 +47,11 @@
     mode: '0755'
   become: true
 
-- name: Create Nginx configuration for Rails app
-  ansible.builtin.template:
-    src: rails.conf.j2
-    dest: /home/ec2-user/raisetech-live8-sample-app/nginx/rails.conf
-  become: true
+# - name: Create Nginx configuration for Rails app
+#   ansible.builtin.template:
+#     src: rails.conf.j2
+#     dest: /home/ec2-user/raisetech-live8-sample-app/nginx/rails.conf
+#   become: true
 
 - name: Copy nginx general configuration file
   template:
