@@ -40,23 +40,23 @@
     cmd: amazon-linux-extras install nginx1 -y
   become: true
 
-- name: Create directory for Nginx configuration files
+- name: Create directory for app configuration files
   ansible.builtin.file:
-    path: /home/ec2-user/raisetech-live8-sample-app/nginx
+    path: /etc/nginx/conf.d/rails.conf
     state: directory
     mode: '0755'
   become: true
 
-# - name: Create Nginx configuration for Rails app
-#   ansible.builtin.template:
-#     src: rails.conf.j2
-#     dest: /home/ec2-user/raisetech-live8-sample-app/nginx/rails.conf
-#   become: true
+- name: Create Nginx configuration for Rails app
+  ansible.builtin.template:
+    src: rails.conf.j2
+    dest: /etc/nginx/conf.d/rails.conf
+  become: true
 
 - name: Copy nginx general configuration file
   template:
     src: nginx.conf.j2
-    dest: /home/ec2-user/raisetech-live8-sample-app/nginx/nginx.conf
+    dest: /etc/nginx/nginx.conf
   become: true
 
 # Reload Nginx after updating configuration
