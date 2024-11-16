@@ -10,24 +10,29 @@
 - name: Remove MariaDB if installed
   ansible.builtin.shell: "sudo yum remove -y mariadb*"
 
-- name: Import GPG key
-  ansible.builtin.shell: "sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
-
-- name: Download MySQL repository package
+- name: Import GPG keys
   ansible.builtin.shell: |
-    MYSQL_PACKAGE_URL="https://dev.mysql.com/get/mysql80-community-release-el7-6.noarch.rpm"
-    sudo wget --no-check-certificate $MYSQL_PACKAGE_URL -O /tmp/mysql.rpm
+    sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+    sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql
 
-- name: Install MySQL repository package
-  ansible.builtin.shell: "sudo yum localinstall -y /tmp/mysql.rpm"
+- name: Wait for YUM lock to be released
+  ansible.builtin.command: |
+    while sudo fuser /var/run/yum.pid >/dev/null 2>&1; do
+      echo "Waiting for YUM lock to be released..."
+      sleep 5
+    done
 
-- name: Install MySQL community development tools
-  ansible.builtin.shell: "sudo yum install -y mysql-community-devel"
+- name: Ensure MySQL repository is installed
+  ansible.builtin.shell: |
+    if ! sudo yum repolist | grep -q mysql80-community; then
+      sudo yum localinstall -y https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
+    fi
 
-- name: Install MySQL community server
-  ansible.builtin.shell: "sudo yum install -y mysql-community-server"
+- name: Install MySQL community server and tools
+  ansible.builtin.shell: |
+    sudo yum install -y mysql-community-server mysql-community-devel
 
-- name: Remove downloaded MySQL repository package
+- name: Remove downloaded MySQL repository package (if any)
   ansible.builtin.file:
     path: /tmp/mysql.rpm
     state: absent
@@ -54,23 +59,6 @@
 - name: Print MySQL server status
   ansible.builtin.debug:
     var: mysql_status.stdout_lines
-
-# - name: Display DB_USER and DB_PASSWORD
-#   ansible.builtin.debug:
-#     msg: "DB_USER: {{ lookup('env', 'DB_USER') }}, DB_PASSWORD: {{ lookup('env', 'DB_PASSWORD') }}"
-
-    
-# - name: Enable mysql_native_password plugin on remote host
-#   ansible.builtin.shell: |
-#     mysql -h {{ db_host }} -u root -p'{{ db_password }}' -e "INSTALL PLUGIN mysql_native_password SONAME 'auth_socket.so';"
-#   become: true
-#   ignore_errors: true
-
-# - name: Change MySQL root authentication to mysql_native_password on remote host
-#   ansible.builtin.shell: |
-#     mysql -h {{ db_host }} -u root -p'{{ db_password }}' -e "ALTER USER 'root'@'{{ db_host }}' IDENTIFIED WITH mysql_native_password BY '{{ db_password }}';"
-#   become: true
-#   ignore_errors: true
 
 - name: Create database.yml
   ansible.builtin.template:
