@@ -40,31 +40,33 @@
     cmd: amazon-linux-extras install nginx1 -y
   become: true
 
-- name: Create directory for app configuration files
-  ansible.builtin.file:
-    path: /etc/nginx/conf.d/rails.conf
-    state: directory
-    mode: '0755'
-  become: true
+# - name: Create directory for app configuration files
+#   ansible.builtin.file:
+#     path: /etc/nginx/conf.d/rails.conf
+#     state: directory
+#     mode: '0755'
+#   become: true
 
 - name: Create Nginx configuration for Rails app
   ansible.builtin.template:
     src: rails.conf.j2
     dest: /etc/nginx/conf.d/rails.conf
+    mode: '0644'
   become: true
 
 - name: Copy nginx general configuration file
-  template:
+  ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    mode: '0644'
   become: true
 
-# Reload Nginx after updating configuration
-- name: Reload Nginx
+- name: Reload Nginx after updating configuration
   ansible.builtin.service:
     name: nginx
     state: reloaded
   become: true
+  when: nginx_test is succeeded
 
 - name: Enable Nginx to start on boot
   ansible.builtin.service:
