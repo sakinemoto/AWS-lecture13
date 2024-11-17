@@ -12,15 +12,8 @@
 
 - name: Import GPG keys
   ansible.builtin.shell: |
-    sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
-    sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql
+    sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
 
-- name: Wait for YUM lock to be released
-  ansible.builtin.shell: |
-    while sudo fuser /var/run/yum.pid >/dev/null 2>&1; do
-      echo "Waiting for YUM lock to be released..."
-      sleep 5
-    done
 
 - name: Ensure MySQL repository is installed
   ansible.builtin.shell: |
