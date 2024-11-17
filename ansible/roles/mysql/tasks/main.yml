@@ -16,7 +16,7 @@
     sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql
 
 - name: Wait for YUM lock to be released
-  ansible.builtin.command: |
+  ansible.builtin.shell: |
     while sudo fuser /var/run/yum.pid >/dev/null 2>&1; do
       echo "Waiting for YUM lock to be released..."
       sleep 5
