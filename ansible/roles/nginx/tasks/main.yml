@@ -61,6 +61,11 @@
     mode: '0644'
   become: true
 
+- name: Test Nginx configuration
+  ansible.builtin.command: nginx -t
+  register: nginx_test
+  ignore_errors: true
+
 - name: Reload Nginx after updating configuration
   ansible.builtin.service:
     name: nginx
