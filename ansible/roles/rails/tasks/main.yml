@@ -10,3 +10,9 @@
   become: true
   become_user: ec2-user
 
+- name: Configure Rails development environment
+  ansible.builtin.template:
+    src: development.rb.j2
+    dest: "{{ app_path }}/config/environments/development.rb"
+  become: true
+  become_user: ec2-user
