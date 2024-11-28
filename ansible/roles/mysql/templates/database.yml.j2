@@ -13,10 +13,10 @@
 default: &default
   adapter: mysql2
   encoding: utf8mb4
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: "{{ db_user }}"
-  password: "{{ db_password }}"
-  host: "{{ db_host }}"
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } ほしほし%>
+  username: "{{ lookup('env', 'db_user') }}"
+  password: "{{ lookup('env', 'db_password') }}"
+  host: "{{ lookup('env', 'Ddb_host') }}"
   socket: {{app_path}}/tmp/sockets/mysql.sock
 
 development:
