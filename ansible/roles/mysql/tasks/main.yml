@@ -53,6 +53,10 @@
   ansible.builtin.debug:
     var: mysql_status.stdout_lines
 
+- name: Debug DB_USER from environment
+  ansible.builtin.debug:
+    msg: "DB_USER: {{ lookup('env', 'DB_USER') }}"
+
 - name: Create database.yml
   ansible.builtin.template:
     src: database.yml.j2
