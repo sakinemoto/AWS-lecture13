@@ -88,7 +88,7 @@ Resources:
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
       AvailabilityZone: !Select [ 0, !GetAZs ]
-      DBName: mydatabase
+      DBName: raisetech_live8_sample_app_development
       Engine: mysql
       EngineVersion: 8.0.35
       MasterUsername: !Ref DBUser  # パラメータを参照
