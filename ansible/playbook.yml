@@ -14,5 +14,6 @@
     - yarn
     - mysql
     - bin_setup
+    - setup_server
     - puma
     - nginx

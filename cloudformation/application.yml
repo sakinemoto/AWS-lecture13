@@ -109,7 +109,7 @@ Resources:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
     Properties:
-      BucketName: mybucket-raisetech-lec10
+      BucketName: mybucket-raisetech-lec13
       Tags:
         - Key: Name
           Value: lec13
