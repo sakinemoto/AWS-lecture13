@@ -12,7 +12,8 @@
     - rails
     - nodejs
     - yarn
-    - bin_setup
     - mysql
+    - bin_setup
+    - assets_precompile
     - puma
     - nginx

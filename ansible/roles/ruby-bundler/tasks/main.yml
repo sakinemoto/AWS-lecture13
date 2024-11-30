@@ -1,5 +1,5 @@
 ---
-# roles/ruby/tasks/main.yml
+# roles/ruby-bundler/tasks/main.yml
 - name: Display environment variables
   ansible.builtin.command: env
   register: env_output
