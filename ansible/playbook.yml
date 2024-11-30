@@ -12,7 +12,7 @@
     - rails
     - nodejs
     - yarn
-    - mysql
     - bin_setup
+    - mysql
     - puma
     - nginx
