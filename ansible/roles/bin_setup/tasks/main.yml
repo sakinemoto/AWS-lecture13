@@ -48,14 +48,6 @@
   async: 1800  # 最大30分
   poll: 0      # 非同期で進行
 
-- name: Wait for bundle install to complete
-  async_status:
-    jid: "{{ ansible_job_id }}"
-  register: bundle_result
-  until: bundle_result.finished
-  retries: 30
-  delay: 60
-
 - name: Create and migrate database
   ansible.builtin.shell: |
     source ~/.bash_profile
