@@ -35,18 +35,26 @@
 # - name: Enable the swap file
 #   command: swapon /swapfile
 
-- name: Run bundle install
+- name: Run bundle install with extended timeout
   ansible.builtin.shell: |
-    source ~/.bash_profile
-    eval "$(rbenv init -)"
     bundle install
   args:
-    chdir: /home/ec2-user/raisetech-live8-sample-app
+    chdir: "{{ app_path }}"
   environment:
     RBENV_ROOT: "{{ rbenv_root }}"
     PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
   become: true
   become_user: ec2-user
+  async: 1800  # 最大30分
+  poll: 0      # 非同期で進行
+
+- name: Wait for bundle install to complete
+  async_status:
+    jid: "{{ ansible_job_id }}"
+  register: bundle_result
+  until: bundle_result.finished
+  retries: 30
+  delay: 60
 
 - name: Create and migrate database
   ansible.builtin.shell: |
