@@ -35,13 +35,29 @@
 # - name: Enable the swap file
 #   command: swapon /swapfile
 
-- name: Run bin/setup script
-  ansible.builtin.shell: >
-    bash -lc 'eval "$(rbenv init -)"; bundle install'
+- name: Run bundle install
+  ansible.builtin.shell: |
+    source ~/.bash_profile
+    eval "$(rbenv init -)"
+    bundle install
   args:
     chdir: /home/ec2-user/raisetech-live8-sample-app
   environment:
     RBENV_ROOT: "{{ rbenv_root }}"
     PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
+  become: true
+  become_user: ec2-user
+
+- name: Create and migrate database
+  ansible.builtin.shell: |
+    source ~/.bash_profile
+    eval "$(rbenv init -)"
+    rails db:create db:migrate
+  args:
+    chdir: "{{ app_path }}"
+  environment:
+    RBENV_ROOT: "{{ rbenv_root }}"
+    PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
+  become: true
   become_user: ec2-user
 

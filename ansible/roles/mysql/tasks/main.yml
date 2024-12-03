@@ -63,15 +63,3 @@
     dest: "{{ app_path }}/config/database.yml"
   become: true
 
-- name: Create and migrate database
-  ansible.builtin.shell: |
-    source ~/.bash_profile
-    eval "$(rbenv init -)"
-    rails db:create db:migrate
-  args:
-    chdir: "{{ app_path }}"
-  environment:
-    RBENV_ROOT: "{{ rbenv_root }}"
-    PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
-  become: true
-  become_user: ec2-user
