@@ -46,7 +46,6 @@
   become: true
   become_user: ec2-user
   async: 1800  # 最大30分
-  poll: 0      # 非同期で進行
 
 - name: Create and migrate database
   ansible.builtin.shell: |
