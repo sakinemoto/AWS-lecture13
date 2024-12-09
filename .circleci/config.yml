@@ -53,6 +53,7 @@ jobs:
             echo "DB_USER: $DB_USER"
             echo "DB_PASSWORD: $DB_PASSWORD"
             echo "DB_HOST: $DB_HOST"
+            echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
       
       - run:
@@ -110,6 +111,7 @@ jobs:
             echo "DB_USER: $DB_USER"
             echo "DB_PASSWORD: $DB_PASSWORD"
             echo "DB_HOST: $DB_HOST"
+            echo "S3_BUCKET: $S3_BUCKET"
 
       - run:
           name: Run Ansible Playbook

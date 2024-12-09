@@ -16,3 +16,9 @@
     dest: "{{ app_path }}/config/environments/development.rb"
   become: true
   become_user: ec2-user
+
+- name: Create storage.yml
+  ansible.builtin.template:
+    src: storage.yml.j2
+    dest: "{{ app_path }}/config/storage.yml"
+  become: true

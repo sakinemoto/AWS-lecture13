@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # ALBのDNS名を追加
   config.hosts << "{{ alb_dns }}"
+
+  # ファイルをAmazon S3に保存する
+  config.active_storage.service = :amazon
 end

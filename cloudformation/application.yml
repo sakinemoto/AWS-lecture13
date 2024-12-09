@@ -162,3 +162,6 @@ Outputs:
   ALBendpoint:
     Description: "The ALB DNS name"
     Value: !GetAtt MyALB.DNSName
+  S3bucketName:
+    Description: "The S3bucket name"
+    Value: !Ref Mys3Bucket
