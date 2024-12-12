@@ -17,6 +17,14 @@
   become: true
   become_user: ec2-user
 
+# ImageMagickのインストール
+- name: Install ImageMagick package
+  ansible.builtin.yum:
+    name:
+      - ImageMagick
+      - ImageMagick-devel
+    state: present
+
 - name: Create storage.yml
   ansible.builtin.template:
     src: storage.yml.j2
