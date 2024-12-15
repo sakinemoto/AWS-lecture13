@@ -2,5 +2,5 @@
 
 amazon:
   service: S3
-  region: "{{ lookup('env', 'AWS_REGION') }}"
+  region: "{{ lookup('env', 'RDSAZ') }}"
   bucket: "{{ lookup('env', 'S3_BUCKET') }}"

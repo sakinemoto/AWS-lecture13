@@ -48,6 +48,7 @@ jobs:
             echo "export DB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text)" >> $BASH_ENV
             echo "export S3_BUCKET=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text)" >> $BASH_ENV
             echo "export ALB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text)" >> $BASH_ENV
+            echo "export RDSAZ=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`RDSAZ`].OutputValue' --output text)" >> $BASH_ENV
             source "$BASH_ENV"
             echo "AWS_EC2_PUBLIC: $AWS_EC2_PUBLIC"
             echo "DB_USER: $DB_USER"
@@ -55,6 +56,7 @@ jobs:
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
+            echo "RDSAZ: $RDSAZ"
       
       - run:
           name: Install boto3 and botocore
