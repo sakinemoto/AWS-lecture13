@@ -141,7 +141,9 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: s3:*
-                Resource: !Sub arn:aws:s3:::${Mys3Bucket}/*
+                Resource:
+                  - !Sub arn:aws:s3:::${Mys3Bucket}/*
+                  - !Sub arn:aws:s3:::${Mys3Bucket}
       Tags:
         - Key: Name
           Value: lec13
