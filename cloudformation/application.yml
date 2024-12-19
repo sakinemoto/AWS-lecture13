@@ -142,8 +142,8 @@ Resources:
               - Effect: Allow
                 Action: s3:*
                 Resource:
-                  - !Sub arn:aws:s3:::${Mys3Bucket}/*
-                  - !Sub arn:aws:s3:::${Mys3Bucket}
+                  - !Sub arn:aws:s3:::mybucket-raisetech-lec13/*
+                  - !Sub arn:aws:s3:::mybucket-raisetech-lec13
       Tags:
         - Key: Name
           Value: lec13
