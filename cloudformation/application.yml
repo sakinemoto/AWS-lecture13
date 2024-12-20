@@ -167,8 +167,3 @@ Outputs:
   S3bucketName:
     Description: "The S3bucket name"
     Value: !Ref Mys3Bucket
-  RDSAZ:
-    Description: "The Availability Zone of the deployment"
-    Value: !Select [ 0, !GetAZs ] # AZリストの最初の要素を取得
-    Export:
-      Name: RDSAZ
