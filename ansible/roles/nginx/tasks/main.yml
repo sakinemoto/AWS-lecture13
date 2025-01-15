@@ -14,26 +14,10 @@
     state: present
   become: true
 
-- name: Add nginx user to ec2-user group
-  user:
-    name: nginx
-    groups: ec2-user
-    append: yes
-
-- name: Ensure /var/lib/nginx/tmp permissions
-  file:
-    path: /var/lib/nginx/tmp
-    state: directory
-    owner: nginx
-    group: nginx
-    mode: '0770'
-
 - name: Ensure sockets directory exists
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets
     state: directory
-    owner: ec2-user
-    group: nginx
     mode: '0770'
 
 - name: Check if Puma socket exists
@@ -44,8 +28,6 @@
 - name: Set permissions for Puma socket if it exists
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
-    owner: ec2-user
-    group: nginx
     mode: '0770'
   when: puma_socket_stat.stat.exists
 
