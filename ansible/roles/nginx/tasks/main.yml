@@ -8,6 +8,11 @@
       - boto3
     state: present
 
+- name: Install Nginx
+  ansible.builtin.shell:
+    cmd: amazon-linux-extras install nginx1 -y
+  become: true
+
 - name: Ensure nginx group exists
   ansible.builtin.group:
     name: nginx
@@ -32,11 +37,6 @@
     mode: '0775'
   when: puma_socket_stat.stat.exists
 
-- name: Install Nginx
-  ansible.builtin.shell:
-    cmd: amazon-linux-extras install nginx1 -y
-  become: true
-
 # - name: Create directory for app configuration files
 #   ansible.builtin.file:
 #     path: /etc/nginx/conf.d/rails.conf
@@ -60,8 +60,8 @@
   ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
-    owner: nginx
-    group: nginx
+    owner: root
+    group: root
     mode: '0644'
   become: true
 
