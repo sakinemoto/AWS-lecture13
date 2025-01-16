@@ -28,6 +28,7 @@
 - name: Set permissions for Puma socket if it exists
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
+    owner: nginx
     mode: '0775'
   when: puma_socket_stat.stat.exists
 
