@@ -18,7 +18,7 @@
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets
     state: directory
-    mode: '0770'
+    mode: '0775'
 
 - name: Check if Puma socket exists
   ansible.builtin.stat:
@@ -28,7 +28,7 @@
 - name: Set permissions for Puma socket if it exists
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
-    mode: '0770'
+    mode: '0775'
   when: puma_socket_stat.stat.exists
 
 - name: Install Nginx
@@ -59,6 +59,8 @@
   ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    owner: nginx
+    group: nginx
     mode: '0644'
   become: true
 
