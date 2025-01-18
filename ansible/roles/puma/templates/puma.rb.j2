@@ -9,8 +9,11 @@ threads threads_count, threads_count
 
 
 # PumaのPIDと状態ファイル
+directory '/home/ec2-user/raisetech-live8-sample-app'
 pidfile "{{ app_path }}/tmp/pids/puma.pid"
 state_path "{{ app_path }}/tmp/pids/puma.state"
+
+activate_control_app
 
 # ログ出力設定
 stdout_redirect '{{ app_path }}/log/puma.stdout.log', '{{ app_path }}/log/puma.stderr.log', true
