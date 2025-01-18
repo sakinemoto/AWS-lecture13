@@ -19,11 +19,14 @@
     state: present
   become: true
 
-- name: Ensure sockets directory exists
+- name: Ensure sockets directory exists and has correct permissions
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets
     state: directory
-    mode: '0775'
+    owner: ec2-user
+    group: nginx
+    mode: '0770'
+  become: true
 
 - name: Check if Puma socket exists
   ansible.builtin.stat:
@@ -33,10 +36,21 @@
 - name: Set permissions for Puma socket if it exists
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock
-    owner: nginx
-    mode: '0775'
+    owner: ec2-user
+    group: nginx
+    mode: '0770'
   when: puma_socket_stat.stat.exists
+  become: true
 
+- name: Ensure Nginx temporary directory exists and has correct permissions
+  ansible.builtin.file:
+    path: /var/lib/nginx/tmp/client_body
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: '0700'
+  become: true
+  
 # - name: Create directory for app configuration files
 #   ansible.builtin.file:
 #     path: /etc/nginx/conf.d/rails.conf

@@ -4,11 +4,10 @@ upstream app_server {
     server unix:/home/ec2-user/raisetech-live8-sample-app/tmp/sockets/puma.sock;  # Pumaのソケットファイルのパス
 }
     server {
-        listen       80;
-        listen       [::]:80;
-        server_name  {{ alb_dns }};
-        root         /home/ec2-user/raisetech-live8-sample-app/public;
-
+        listen 80;
+        listen [::]:80;
+        server_name {{ alb_dns }};
+        root /home/ec2-user/raisetech-live8-sample-app/public;
         
         # アプリケーションの場所（ルート）
         location / {
@@ -39,7 +38,7 @@ upstream app_server {
         }
 
         error_page 500 502 503 504 /50x.html;
-        location = /50x.html {
+        location = /500.html {
 
 	}
 
