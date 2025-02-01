@@ -68,7 +68,7 @@
 - name: deploy application.rb
   ansible.builtin.template:
     src: templates/application.rb.j2
-    dest: "{{ app_path }}/config/environments/application.rb"
+    dest: "{{ app_path }}/config/application.rb"
 
 - name: Copy nginx general configuration file
   ansible.builtin.template:

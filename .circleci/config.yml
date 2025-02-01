@@ -117,6 +117,19 @@ jobs:
           name: Run Ansible Playbook
           command: ansible-playbook -i "$AWS_EC2_PUBLIC", -u ec2-user ansible/playbook.yml
 
+      - run:
+          name: Install dependencies
+          command: |
+            cd severspec
+            gem install bundler
+            bundle install  # Gemfileに定義されたgemをインストール
+
+      - run:
+          name: Run Serverspec tests
+          command: |
+            cd serverspec
+            rake spec  # Serverspecのテストを実行
+
 
 workflows:
   lecture13:
