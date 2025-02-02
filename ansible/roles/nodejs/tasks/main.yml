@@ -1,19 +1,18 @@
 ---
 # roles/nodejs/tasks/main.yml
 
-# - name: Add NodeSource repository
-#   ansible.builtin.shell: curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+- name: Add NodeSource repository
+  ansible.builtin.shell: curl -sL https://rpm.nodesource.com/setup_16.x | bash -
 
-# - name: Install Node.js
-#   ansible.builtin.shell: "sudo yum install -y nodejs"
+- name: Install Node.js
+  ansible.builtin.shell: "sudo yum install -y nodejs"
 
-- name: Enable Amazon Linux Extras repository for Node.js 18
-  shell: amazon-linux-extras enable nodejs18 && yum clean metadata
-  args:
-    warn: false  # シェルの警告を抑制
+# - name: Enable Amazon Linux Extras repository for Node.js 16
+#   shell: amazon-linux-extras enable nodejs16 && yum clean metadata
+#   args:
+#     warn: false
 
-- name: Install Node.js 18
-  yum:
-    name: nodejs
-    state: present
-
+# - name: Install Node.js 16
+#   yum:
+#     name: nodejs
+#     state: present
