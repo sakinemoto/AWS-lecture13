@@ -15,7 +15,6 @@ jobs:
     docker:
       - image: circleci/python:3.8
       - image: cimg/base:stable
-    working_directory: ~/
     steps:
       - checkout
       - aws-cli/setup:
@@ -121,14 +120,14 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd serverspec
+            cd ~/serverspec
             gem install bundler
             bundle install  # Gemfileに定義されたgemをインストール
 
       - run:
           name: Run Serverspec tests
           command: |
-            cd serverspec
+            cd ~/serverspec
             rake spec  # Serverspecのテストを実行
 
 
