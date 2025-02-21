@@ -15,7 +15,7 @@ jobs:
     docker:
       - image: circleci/python:3.8
       - image: cimg/base:stable
-    working_directory: ~/project
+    working_directory: ~/
     steps:
       - checkout
       - aws-cli/setup:
