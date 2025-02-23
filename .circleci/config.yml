@@ -120,16 +120,17 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            cd ~/serverspec
+            ls -al
+            cd serverspec  
             gem install bundler
-            bundle install  # Gemfileに定義されたgemをインストール
+            bundle install  # Gemfile に定義された gem をインストール
 
       - run:
           name: Run Serverspec tests
           command: |
-            cd ~/serverspec
-            rake spec  # Serverspecのテストを実行
-
+            ls -al  # serverspec フォルダがあるか確認
+            cd serverspec  #  ~/serverspec ではなく ./serverspec に変更
+            rake spec  # Serverspec のテストを実行
 
 workflows:
   lecture13:
