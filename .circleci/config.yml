@@ -142,4 +142,6 @@ workflows:
   lecture13:
     jobs:
       - deploy
-      - execute_serverspec
+      - execute_serverspec:
+          requires:
+            - deploy
