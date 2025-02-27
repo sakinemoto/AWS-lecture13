@@ -116,7 +116,7 @@ jobs:
           name: Run Ansible Playbook
           command: ansible-playbook -i "$AWS_EC2_PUBLIC", -u ec2-user ansible/playbook.yml
 
-    execute_serverspec:
+  execute_serverspec:
     docker:
       - image: cimg/ruby:3.2.3
     steps:
@@ -142,3 +142,4 @@ workflows:
   lecture13:
     jobs:
       - deploy
+      - execute_serverspec
