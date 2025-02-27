@@ -117,21 +117,28 @@ jobs:
           name: Run Ansible Playbook
           command: ansible-playbook -i "$AWS_EC2_PUBLIC", -u ec2-user ansible/playbook.yml
 
+    execute-serverspec:
+    executor: ruby/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
-          name: Install dependencies
-          command: |
-            ls -al
-            cd serverspec  
-            gem install bundler
-            bundle install  # Gemfile に定義された gem をインストール
-
+          command: 
+            cat bash.env >> $BASH_ENV
+      - ruby/install:
+          version: '3.2.3'
       - run:
-          name: Run Serverspec tests
+          name: bundle install
           command: |
-            ls -al  # serverspec フォルダがあるか確認
-            cd serverspec  #  ~/serverspec ではなく ./serverspec に変更
-            rake spec  # Serverspec のテストを実行
-
+            cd serverspec
+            bundle install
+      - run:
+          name: execute serverspec
+          command: |
+            cd serverspec
+            bundle exec rake spec
+            
 workflows:
   lecture13:
     jobs:
