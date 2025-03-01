@@ -55,6 +55,10 @@ jobs:
             echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
           
+      - persist_to_workspace:  # `bash.env` をワークスペースに保存
+          root: .
+          paths:
+            - bash.env
       
       - run:
           name: Install boto3 and botocore
@@ -125,8 +129,16 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          command: 
-            cat bash.env >> $BASH_ENV
+          name: Load environment variables
+          command: |
+            if [ -f bash.env ]; then
+              set -o allexport
+              source bash.env
+              set +o allexport
+            else
+              echo "bash.env not found!"
+              exit 1
+            fi
       - run: ruby --version
       - run:
           name: bundle install
