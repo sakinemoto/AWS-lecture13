@@ -10,10 +10,9 @@ parameters:
     default: "lec13"
 
 jobs:
-  deploy:
+  cloudformation:
     docker:
       - image: circleci/python:3.8
-      - image: cimg/base:stable
     steps:
       - checkout
       - aws-cli/setup:
@@ -59,7 +58,16 @@ jobs:
           root: .
           paths:
             - bash.env
-      
+  ansible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          command: 
+            cat bash.env >> $BASH_ENV
+            source "$BASH_ENV"
       - run:
           name: Install boto3 and botocore
           command: |
@@ -70,42 +78,37 @@ jobs:
       - run:
           name: Verify botocore installation
           command: python -m pip show botocore
-
       - run:
           name: Install Ansible
           command: |
             python -m pip install ansible
-
       - run:
           name: Check and Install Specific Version of amazon.aws Collection
           command: |
             if ! ansible-galaxy collection list | grep -q 'amazon.aws'; then
-              echo "amazon.aws collection is not installed. Installing version 5.5.0..."
+              echo "amazon.aws collection is not installed. Installing version 3.5.0..."
               ansible-galaxy collection install amazon.aws:3.5.0
             else
               echo "amazon.aws collection is already installed."
             fi
-
       - run:
           name: Set up SSH Key
           command: |
             mkdir -p ~/.ssh
             echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
-
       - add_ssh_keys:
           fingerprints:
-            - "	SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
-
+            - "SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
       - run:
           name: Test SSH Connection
           command: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$AWS_EC2_PUBLIC echo "SSH connection successful"
 
-      - aws-cli/setup:
-          aws_access_key_id: AWS_ACCESS_KEY_ID
-          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
-          region: AWS_DEFAULT_REGION
+      # - aws-cli/setup:
+      #     aws_access_key_id: AWS_ACCESS_KEY_ID
+      #     aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+      #     region: AWS_DEFAULT_REGION
 
       - run:
           name: Set Environment Variables for Ansible
@@ -121,7 +124,7 @@ jobs:
           name: Run Ansible Playbook
           command: ansible-playbook -i "$AWS_EC2_PUBLIC", -u ec2-user ansible/playbook.yml
 
-  execute_serverspec:
+  serverspec:
     docker:
       - image: cimg/ruby:3.2.3
     steps:
@@ -154,7 +157,10 @@ jobs:
 workflows:
   lecture13:
     jobs:
-      - deploy
-      - execute_serverspec:
+      - cloudformation
+      - ansible:
           requires:
-            - deploy
+          - cloudformation
+      - serverspec:
+          requires:
+            - ansible
