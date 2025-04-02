@@ -53,6 +53,7 @@ jobs:
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
+            cat bash.env
           
       - persist_to_workspace:  # `bash.env` をワークスペースに保存
           root: .
@@ -119,6 +120,7 @@ jobs:
             echo "DB_PASSWORD: $DB_PASSWORD"
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
+            cat bash.env
 
       - run:
           name: Run Ansible Playbook
