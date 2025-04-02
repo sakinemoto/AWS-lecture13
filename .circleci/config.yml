@@ -53,8 +53,9 @@ jobs:
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
             echo "ALB_HOST: $ALB_HOST"
-            cat bash.env
-          
+      - run:
+          command: 
+            cp $BASH_ENV bash.env    
       - persist_to_workspace:  # `bash.env` をワークスペースに保存
           root: .
           paths:
@@ -68,7 +69,6 @@ jobs:
       - run:
           command: 
             cat bash.env >> $BASH_ENV
-            source "$BASH_ENV"
       - run:
           name: Install boto3 and botocore
           command: |
