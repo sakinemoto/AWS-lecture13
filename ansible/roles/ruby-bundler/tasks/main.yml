@@ -12,6 +12,17 @@
   ansible.builtin.shell: "sudo yum update -y"
   become: true
 
+- name: Ensure pip is installed (Amazon Linux 2)
+  yum:
+     name: python3-pip
+     state: present
+
+- name: Install boto3 via pip
+  pip:
+    name:
+      - boto3
+      - botocore
+
 - name: Install dependencies
   ansible.builtin.shell: "sudo yum install -y {{ item }}"
   loop:
