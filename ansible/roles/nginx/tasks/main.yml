@@ -1,13 +1,6 @@
 ---
 # roles/nginx/tasks/main.yml
 
-- name: Install required Python packages for Ansible AWS modules
-  pip:
-    name:
-      - boto
-      - boto3
-    state: present
-
 - name: Install Nginx
   ansible.builtin.shell:
     cmd: amazon-linux-extras install nginx1 -y
