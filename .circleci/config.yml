@@ -144,7 +144,15 @@ jobs:
               echo "bash.env not found!"
               exit 1
             fi
-      - run: ruby --version
+
+      - run:
+          name: Debug - check serverspec directory
+          command: |
+            pwd
+            echo "--- プロジェクトの中身 ---"
+            ls -la
+            echo "--- serverspec ディレクトリの中身 ---"
+            ls -la serverspec
       - run:
           name: bundle install
           command: |
