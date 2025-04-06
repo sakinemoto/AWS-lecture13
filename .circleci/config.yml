@@ -105,7 +105,7 @@ jobs:
           name: Test SSH Connection
           command: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$AWS_EC2_PUBLIC echo "SSH connection successful"
-
+  
       # - aws-cli/setup:
       #     aws_access_key_id: AWS_ACCESS_KEY_ID
       #     aws_secret_access_key: AWS_SECRET_ACCESS_KEY
@@ -121,7 +121,11 @@ jobs:
             echo "DB_HOST: $DB_HOST"
             echo "S3_BUCKET: $S3_BUCKET"
             cat bash.env
-
+      
+      - run:
+          name: Check ENV var
+          command: echo "AWS_EC2_PUBLIC=$AWS_EC2_PUBLIC"
+      
       - run:
           name: Run Ansible Playbook
           command: ansible-playbook -i "$AWS_EC2_PUBLIC", -u ec2-user ansible/playbook.yml
@@ -144,14 +148,13 @@ jobs:
               echo "bash.env not found!"
               exit 1
             fi
-
       - run:
           name: Debug - check serverspec directory
           command: |
             pwd
-            echo "--- プロジェクトの中身 ---"
+            echo "--- Checking project contents ---"
             ls -la
-            echo "--- serverspec ディレクトリの中身 ---"
+            echo "--- Checking serverspec direcry contents ---"
             ls -la serverspec
       - run:
           name: bundle install
@@ -170,7 +173,7 @@ workflows:
       - cloudformation
       - ansible:
           requires:
-          - cloudformation
+            - cloudformation
       - serverspec:
           requires:
             - ansible
