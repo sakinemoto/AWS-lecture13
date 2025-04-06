@@ -133,17 +133,17 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: Load environment variables
-          command: |
-            if [ -f bash.env ]; then
-              set -o allexport
-              source bash.env
-              set +o allexport
-            else
-              echo "bash.env not found!"
-              exit 1
-            fi
+      # - run:
+      #     name: Load environment variables
+      #     command: |
+      #       if [ -f bash.env ]; then
+      #         set -o allexport
+      #         source bash.env
+      #         set +o allexport
+      #       else
+      #         echo "bash.env not found!"
+      #         exit 1
+      #       fi
 
       - run:
           name: Debug - check serverspec directory
