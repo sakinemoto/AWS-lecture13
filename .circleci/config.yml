@@ -61,7 +61,7 @@ jobs:
           paths:
             - bash.env
       - run:
-          name: Debug: print EC2 IP directly
+          name: Debug print EC2 IP directly
           command: |
             aws cloudformation describe-stacks \
               --stack-name << pipeline.parameters.NameBase >>-application \
