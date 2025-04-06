@@ -60,6 +60,13 @@ jobs:
           root: .
           paths:
             - bash.env
+      - run:
+          name: Debug: print EC2 IP directly
+          command: |
+            aws cloudformation describe-stacks \
+              --stack-name << pipeline.parameters.NameBase >>-application \
+              --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' \
+              --output text 
   ansible:
     executor: ansible-playbook/default
     steps:
