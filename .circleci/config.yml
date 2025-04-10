@@ -198,6 +198,16 @@ jobs:
             echo "--- Checking serverspec direcry contents ---"
             ls -la serverspec
       - run:
+          name: Set up SSH Key
+          command: |
+            mkdir -p ~/.ssh
+            echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
+            
+      - run:
           name: bundle install
           command: |
             cd serverspec
