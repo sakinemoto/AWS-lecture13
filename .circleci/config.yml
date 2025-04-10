@@ -41,12 +41,36 @@ jobs:
       - run:
           name: Write env vars to bash.env
           command: |
-            echo "export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text)" >> bash.env
-            echo "export DB_USER=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBUser`].OutputValue' --output text)" >> bash.env
-            echo "export DB_PASSWORD=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBPassword`].OutputValue' --output text)" >> bash.env
-            echo "export DB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text)" >> bash.env
-            echo "export S3_BUCKET=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text)" >> bash.env
-            echo "export ALB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text)" >> bash.env
+            set -eo pipefail
+
+            STACK_NAME="<< pipeline.parameters.NameBase >>-application"
+
+            EC2_PUBLIC_IP=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text)
+            DB_USER=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`DBUser`].OutputValue' --output text)
+            DB_PASSWORD=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`DBPassword`].OutputValue' --output text)
+            DB_HOST=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text)
+            S3_BUCKET=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text)
+            ALB_HOST=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text)
+
+            echo "export AWS_EC2_PUBLIC=$EC2_PUBLIC_IP" > bash.env
+            echo "export DB_USER=$DB_USER" >> bash.env
+            echo "export DB_PASSWORD=$DB_PASSWORD" >> bash.env
+            echo "export DB_HOST=$DB_HOST" >> bash.env
+            echo "export S3_BUCKET=$S3_BUCKET" >> bash.env
+            echo "export ALB_HOST=$ALB_HOST" >> bash.env
+
+            echo "--- bash.env 作成内容 ---"
+            cat bash.env
+
+      # - run:
+      #     name: Write env vars to bash.env
+      #     command: |
+      #       echo "export AWS_EC2_PUBLIC=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`EC2publicIP`].OutputValue' --output text)" >> bash.env
+      #       echo "export DB_USER=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBUser`].OutputValue' --output text)" >> bash.env
+      #       echo "export DB_PASSWORD=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBPassword`].OutputValue' --output text)" >> bash.env
+      #       echo "export DB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`DBhost`].OutputValue' --output text)" >> bash.env
+      #       echo "export S3_BUCKET=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`S3bucketName`].OutputValue' --output text)" >> bash.env
+      #       echo "export ALB_HOST=$(aws cloudformation describe-stacks --stack-name << pipeline.parameters.NameBase >>-application --query 'Stacks[].Outputs[?OutputKey==`ALBendpoint`].OutputValue' --output text)" >> bash.env
 
       - persist_to_workspace:  # `bash.env` をワークスペースに保存
           root: .
