@@ -149,7 +149,9 @@ jobs:
             mkdir -p ~/.ssh
             echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
-
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
       - run:
           name: Test SSH Connection
           command: |
@@ -201,6 +203,10 @@ jobs:
             mkdir -p ~/.ssh
             echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
+
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
       - run:
           name: Check id_rsa exists and is readable
           command: |
