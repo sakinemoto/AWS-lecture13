@@ -149,6 +149,7 @@ jobs:
             mkdir -p ~/.ssh
             echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
+
       - add_ssh_keys:
           fingerprints:
             - "SHA256:jEeOv32OmEto8NyVF5+JukFhMiQl0zq1ivXSQXvWNLo"
@@ -212,6 +213,10 @@ jobs:
           command: |
             ls -la ~/.ssh
             cat ~/.ssh/id_rsa | head -n 5
+      - run:
+          name: Test SSH connection manually
+          command: |
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$AWS_EC2_PUBLIC "echo 'SSH connection OK'" || echo "❌ SSH failed"
 
       - run:
           name: bundle install
