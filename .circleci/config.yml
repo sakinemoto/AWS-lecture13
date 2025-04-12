@@ -202,7 +202,7 @@ jobs:
           name: Set up SSH Key
           command: |
             mkdir -p ~/.ssh
-            echo "$PRIVATE_KEY"  > ~/.ssh/id_rsa
+            printf '%s\n' "$PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
       - add_ssh_keys:
