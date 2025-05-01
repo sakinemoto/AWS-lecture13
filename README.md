@@ -15,7 +15,7 @@
   
 ## CircleCIの実行  
 
-#### CloudFormationのテンプレートを使ってスタックを作成  
+#### CloudFormationのテンプレートを使ってスタックを作成
 
 - CircleCIのconfig.ymlにCloudFormationのテンプレートを実行する処理を追加
 - 実行結果  
