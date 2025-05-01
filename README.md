@@ -19,26 +19,26 @@
 
 - CircleCIのconfig.ymlにCloudFormationのテンプレートを実行する処理を追加
 - 実行結果  
-  [画像]
+  ![cloudformation](img/cloudformation.png)
 
 #### Ansible　playbookの実行  
 
 - CircleCIのconfig.ymlにAnsibleのplaybookを実行する処理を追加  
 -実行結果  
-[画像]
+![ansible](img/ansible.png)
 
 #### Serverspecによるテスト実行  
 
 - CircleCIのconfig.ymlにSeverspecのテスト実行する処理を追加  
 - 実行結果  
-  [画像]
+  ![serverspec](img/severspec.png)
 
 ---
 
 #### CircleCI実行結果  
 
-[]
+![circleci](img/circleci.png)
 
 #### ALBのDNS名でアクセス、アプリが動作することを確認
 
-[]
+![app](img/app.png)
