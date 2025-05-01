@@ -44,20 +44,6 @@
     mode: '0700'
   become: true
   
-# - name: Create directory for app configuration files
-#   ansible.builtin.file:
-#     path: /etc/nginx/conf.d/rails.conf
-#     state: directory
-#     mode: '0755'
-#   become: true
-
-# - name: Create Nginx configuration for Rails app
-#   ansible.builtin.template:
-#     src: rails.conf.j2
-#     dest: /etc/nginx/conf.d/rails.conf
-#     mode: '0644'
-#   become: true
-
 - name: deploy application.rb
   ansible.builtin.template:
     src: templates/application.rb.j2

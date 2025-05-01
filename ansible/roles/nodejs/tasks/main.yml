@@ -7,12 +7,3 @@
 - name: Install Node.js
   ansible.builtin.shell: "sudo yum install -y nodejs"
 
-# - name: Enable Amazon Linux Extras repository for Node.js 16
-#   shell: amazon-linux-extras enable nodejs16 && yum clean metadata
-#   args:
-#     warn: false
-
-# - name: Install Node.js 16
-#   yum:
-#     name: nodejs
-#     state: present

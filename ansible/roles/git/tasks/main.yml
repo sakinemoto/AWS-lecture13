@@ -1,23 +1,6 @@
 ---
 # roles/git/tasks/main.yml
 
-# - name: pipでPyMySQLをインストール
-#   ansible.builtin.pip:
-#     name: PyMySQL
-#   become: true
-
-# - name: Install cryptography using pip
-#   ansible.builtin.pip:
-#     name: cryptography
-#   become: true
-
-# - name: AnsibleでPython 2.7を使用するように設定
-#   ansible.builtin.set_fact:
-#     ansible_python_interpreter: /usr/bin/python2.7
-
-# - name: Use Python 3 as Ansible interpreter
-#   ansible.builtin.set_fact:
-#     ansible_python_interpreter: /usr/bin/python3
 - name: Display DB environment variables
   ansible.builtin.debug:
     msg: 

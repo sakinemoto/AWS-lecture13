@@ -1,18 +1,6 @@
 ---
 # roles/rails/setup_server/main.yml
 
-  # 　cloudformationで設定済みのため省略
-  # - name: Allow TCP traffic on port 3000 in security group
-  # amazon.aws.ec2_group:
-  #   name: EC2-SG-lec13  # セキュリティグループ名を指定
-  #   description: "Allow TCP traffic on port 3000"
-  #   rules:
-  #     - proto: tcp
-  #       from_port: 3000
-  #       to_port: 3000
-  #       cidr_ip: 0.0.0.0/0  # 任意のIPからのアクセスを許可
-  #   state: present
-
 - name: Change directory to the application root
   ansible.builtin.shell: cd {{ app_path }}
   args:
@@ -40,20 +28,6 @@
     fi
   become: true
   become_user: ec2-user
-
-# - name: Check if port 3000 is in use
-#   ansible.builtin.shell: |
-#     sudo lsof -i :3000 | grep LISTEN
-#   register: port_check
-#   ignore_errors: true
-#   become: true
-
-# - name: Kill process using port 3000 if in use
-#   ansible.builtin.shell: |
-#     sudo kill -9 $(sudo lsof -t -i :3000)
-#   when: port_check.stdout != ""
-#   ignore_errors: true
-#   become: true
 
 - name: Remove existing Rails server PID file
   ansible.builtin.file:
