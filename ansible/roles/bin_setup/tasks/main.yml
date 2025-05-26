@@ -44,8 +44,7 @@
     PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
   become: true
   become_user: ec2-user
-  async: 1800  # 最大30分
-  poll: 0
+
 
 - name: Create and migrate database
   ansible.builtin.shell: |
