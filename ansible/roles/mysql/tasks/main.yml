@@ -13,8 +13,16 @@
     state: absent
   become: true
 
-- name: Remove MariaDB if installed
-  ansible.builtin.shell: "sudo yum remove -y mariadb*"
+- name: Remove MariaDB packages if installed
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - mariadb-libs
+    - mariadb-server
+    - mariadb
+  ignore_errors: true  # 存在しないパッケージでエラーを防ぐ
+  become: true
 
 - name: Import GPG keys
   ansible.builtin.rpm_key:
@@ -25,7 +33,7 @@
 
 - name: Install MySQL repository RPM
   ansible.builtin.yum:
-    name: https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
+    name: https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
     state: present
   become: true
 

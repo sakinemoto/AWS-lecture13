@@ -31,7 +31,7 @@
   become: true
 
 - name: Install dependencies
-  ansible.builtin.shell: "sudo yum install -y {{ item }}"
+  ansible.builtin.command: yum install -y {{ item }}
   loop:
     - gcc
     - openssl-devel
