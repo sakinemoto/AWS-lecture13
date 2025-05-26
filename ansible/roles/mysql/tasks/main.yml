@@ -32,11 +32,17 @@
 
 
 - name: Install MySQL repository RPM
-  ansible.builtin.yum:
-    name: https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
-    state: present
+  ansible.builtin.get_url:
+    url: https://repo.mysql.com/mysql80-community-release-el7-7.noarch.rpm
+    dest: /tmp/mysql80-community-release-el7-7.noarch.rpm
   become: true
 
+- name: Install the MySQL repo rpm
+  ansible.builtin.yum:
+    name: /tmp/mysql80-community-release-el7-7.noarch.rpm
+    state: present
+  become: true
+  
 - name: Install MySQL packages
   ansible.builtin.yum:
     name:
