@@ -12,18 +12,6 @@
   ansible.builtin.command: yum update -y
   become: true
 
-- name: Ensure pip is installed (Amazon Linux 2)
-  yum:
-     name: python3-pip
-     state: present
-
-- name: Install boto3 via pip
-  pip:
-    name:
-      - boto3
-      - botocore
-    executable: pip3
-
 - name: Install Development Tools
   ansible.builtin.yum:
     name: "@Development Tools"
