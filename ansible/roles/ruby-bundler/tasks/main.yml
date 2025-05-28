@@ -7,9 +7,10 @@
 - debug:
     msg: "{{ env_output.stdout_lines | select('search', 'DB_') }}"
 
-
 - name: Update all packages to the latest version
-  ansible.builtin.command: yum update -y
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
   become: true
 
 - name: Install Development Tools
@@ -19,7 +20,9 @@
   become: true
 
 - name: Install dependencies
-  ansible.builtin.command: yum install -y {{ item }}
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
   loop:
     - gcc
     - openssl-devel
@@ -88,10 +91,6 @@
     PATH: "{{ rbenv_root }}/bin:{{ rbenv_root }}/shims:{{ ansible_env.PATH }}"
   become: true
   become_user: ec2-user
-
-# - name: Install Development Tools
-#   ansible.builtin.shell: "sudo yum groupinstall -y 'Development Tools'"
-#   become: true
 
 - name: Install bundler
   ansible.builtin.command: gem install bundler -v {{ bundler_version }}
